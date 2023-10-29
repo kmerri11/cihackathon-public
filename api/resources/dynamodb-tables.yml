@@ -1,0 +1,128 @@
+Resources:
+  AlgorithmsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-algorithms
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  Round1AlgorithmsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round1-algorithms
+      AttributeDefinitions:
+        - AttributeName: algorithmId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: algorithmId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  Round1AssignmentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round1-assignments
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  
+  Round1ScoresTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round1-scores
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: algorithmId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: algorithmId
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+  Round2AssignmentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round2-assignments
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  
+  Round2CountersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round2-counters
+      AttributeDefinitions:
+        - AttributeName: token
+          AttributeType: S
+      KeySchema:
+        - AttributeName: token
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  Round2PairsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round2-pairs
+      AttributeDefinitions:
+        - AttributeName: pairId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pairId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  
+  Round2ScoresTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round2-scores
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: pairId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: pairId
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+  
+  Round2SetsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round2-sets
+      AttributeDefinitions:
+        - AttributeName: setId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: setId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  Round3AlgorithmsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.project}-${self:custom.stage}-round3-algorithms
+      AttributeDefinitions:
+        - AttributeName: algorithmId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: algorithmId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST

@@ -1,0 +1,5 @@
+{
+  "name": "Test User",
+  "email": "bogus@email.com",
+  "message": "Test message from Lambda API"
+}

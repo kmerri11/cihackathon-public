@@ -1,0 +1,76 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.2.1",
+    "@aws-amplify/analytics": "^3.2.3",
+    "@aws-amplify/api": "^3.1.19",
+    "@aws-amplify/auth": "^3.3.1",
+    "@aws-amplify/core": "^3.4.2",
+    "@aws-amplify/interactions": "^3.1.19",
+    "@aws-amplify/pubsub": "^3.0.20",
+    "@aws-amplify/storage": "^3.2.9",
+    "@aws-amplify/ui": "^2.0.2",
+    "@aws-amplify/ui-react": "^0.2.9",
+    "@aws-amplify/xr": "^2.1.19",
+    "@react-native-community/netinfo": "^5.9.4",
+    "@sentry/react": "^5.29.2",
+    "@sentry/tracing": "^5.29.2",
+    "@strongdm/glyphicon": "^0.0.5",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "a-theme-react": "^0.0.5",
+    "antd": "^4.4.1",
+    "aws-amplify": "^3.0.20",
+    "aws-amplify-react": "^4.1.17",
+    "aws-sdk": "^2.713.0",
+    "bootstrap": "^4.5.0",
+    "dayjs": "^1.8.29",
+    "jquery": "^3.5.1",
+    "mathjs": "^7.5.1",
+    "modern-normalize": "^0.6.0",
+    "popper": "^1.0.1",
+    "popper.js": "^1.16.1",
+    "react": "^16.13.1",
+    "react-audio-player": "^0.13.0",
+    "react-bootstrap": "^1.0.1",
+    "react-bootstrap-range-slider": "^2.0.2",
+    "react-customizable-progressbar": "^1.0.1",
+    "react-dom": "^16.13.1",
+    "react-dropzone": "^11.0.2",
+    "react-gtm-module": "^2.0.10",
+    "react-helmet": "^6.1.0",
+    "react-icons": "^3.10.0",
+    "react-loading": "^2.0.3",
+    "react-player": "^2.6.2",
+    "react-router-bootstrap": "^0.25.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "react-table": "^7.6.1",
+    "uuid": "^8.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "ie 11",
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

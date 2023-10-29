@@ -1,0 +1,8 @@
+{
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "us-east-2:41bbbe83-6a4a-4222-9528-5c901313cd4a",
+      "cognitoAuthenticationProvider": "cognito-idp.us-east-2.amazonaws.com/us-east-2_CqPRRaFmB,cognito-idp.us-east-2.amazonaws.com/us-east-2_CqPRRaFmB:CognitoSignIn:f0723a2f-b621-49ff-927b-674bf45e799a"
+    }
+  }
+}

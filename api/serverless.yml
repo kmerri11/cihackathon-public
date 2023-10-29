@@ -1,0 +1,267 @@
+service: cihackathon-api
+
+# Create an optimized package for our functions
+package:
+  individually: true
+
+plugins:
+  - serverless-bundle # Package our functions with Webpack
+  - serverless-offline
+  - serverless-dotenv-plugin # Load .env as environment variables
+
+custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or fallsback to what we have set in the provider section.
+  project: cihackathon
+  stage: ${opt:stage, self:provider.stage}
+  # used for determining position in set
+  round1entries_per_set: 60
+  round2entries_per_set: 60
+  round2_max_sets: 30
+  # Set the table name here so we can use it while testing locally
+  algorithmsTable: ${self:custom.project}-${self:custom.stage}-algorithms
+  round1AlgorithmsTable: ${self:custom.project}-${self:custom.stage}-round1-algorithms
+  round1AssignmentsTable: ${self:custom.project}-${self:custom.stage}-round1-assignments
+  round1ScoresTable: ${self:custom.project}-${self:custom.stage}-round1-scores
+  round2AlgorithmsTable: ${self:custom.project}-${self:custom.stage}-round2-algorithms
+  round2AssignmentsTable: ${self:custom.project}-${self:custom.stage}-round2-assignments
+  round2CountersTable: ${self:custom.project}-${self:custom.stage}-round2-counters
+  round2PairsTable: ${self:custom.project}-${self:custom.stage}-round2-pairs
+  round2ScoresTable: ${self:custom.project}-${self:custom.stage}-round2-scores
+  round2SetsTable: ${self:custom.project}-${self:custom.stage}-round2-sets
+  vocoderfunction: ${self:custom.project}-pyapi-${self:custom.stage}-vocoder
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-2
+  tracing:
+    apiGateway: true
+    lambda: true
+
+  environment:
+    round1entries_per_set: ${self:custom.round1entries_per_set}
+    round2entries_per_set: ${self:custom.round2entries_per_set}
+    round2_max_sets: ${self:custom.round2_max_sets}
+    algorithmsTable: ${self:custom.algorithmsTable}
+    round1AlgorithmsTable: ${self:custom.round1AlgorithmsTable}
+    round1AssignmentsTable: ${self:custom.round1AssignmentsTable}
+    round1ScoresTable: ${self:custom.round1ScoresTable}
+    round2AlgorithmsTable: ${self:custom.round2AlgorithmsTable}
+    round2AssignmentsTable: ${self:custom.round2AssignmentsTable}
+    round2CountersTable: ${self:custom.round2CountersTable}
+    round2PairsTable: ${self:custom.round2PairsTable}
+    round2ScoresTable: ${self:custom.round2ScoresTable}
+    round2SetsTable: ${self:custom.round2SetsTable}
+    vocoderfunction: ${self:custom.vocoderfunction}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - lambda:InvokeFunction
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource:
+        - "*"
+    - Effect: Allow
+      Action:
+        - cognito-idp:ListUsers
+      Resource:
+        - "***"
+
+functions:
+  #
+  # Slack webhook
+  #
+  slack:
+    handler: slack.main
+
+  #
+  # Algorithm APIs
+  #
+  createalgorithm:
+    handler: algorithm/create.main
+    events:
+      - http:
+          path: algorithm
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  getalgorithm:
+    handler: algorithm/get.main
+    events:
+      - http:
+          path: algorithm
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  deletealgorithm:
+    handler: algorithm/delete.main
+    events:
+      - http:
+          path: algorithm
+          method: delete
+          cors: true
+          authorizer: aws_iam
+
+  #
+  # Entry APIs
+  #
+  createentry:
+    handler: entries/create.main
+    events:
+      - http:
+          path: algorithms
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  getentry:
+    handler: entries/get.main
+    events:
+      - http:
+          path: algorithms/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  listentries:
+    handler: entries/list.main
+    events:
+      - http:
+          path: algorithms
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  deleteentry:
+    handler: entries/delete.main
+    events:
+      - http:
+          path: algorithms/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+
+  #
+  # List of users and scores for round 1 and 2
+  #
+  round1leaderboard:
+    handler: leaderboard/round1.main
+    events:
+      - http:
+          path: leaderboard/round1
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  round2leaderboard:
+    handler: leaderboard/round2.main
+    events:
+      - http:
+          path: leaderboard/round2
+          method: get
+          cors: true
+          authorizer: aws_iam
+  
+  round2bleaderboard:
+    handler: leaderboard/round2b.main
+    events:
+      - http:
+          path: leaderboard/round2b
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  userlist:
+    handler: leaderboard/userlist.main
+    events:
+      - http:
+          path: userlist
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  #
+  # Round 1 APIs
+  #
+  round1getentries:
+    handler: round1/getRound1Entries.main
+    events:
+      - http:
+          path: round1
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  round1addscore:
+    handler: round1/addRound1Score.main
+    events:
+      - http:
+          path: round1/score
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  round1assignset:
+    handler: round1/assignRound1Set.main
+    events:
+      - http:
+          path: round1/assign
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  #
+  # Round 2 APIs
+  #
+  round2getentries:
+    handler: round2/getRound2Entries.main
+    events:
+      - http:
+          path: round2
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  round2addscore:
+    handler: round2/addRound2Score.main
+    events:
+      - http:
+          path: round2/score
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  round2assignset:
+    handler: round2/assignRound2Set.main
+    events:
+      - http:
+          path: round2/assign
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+
+# Create our resources with separate CloudFormation templates
+resources:
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
+  # DynamoDB
+  - ${file(resources/dynamodb-tables.yml)}
+  # S3
+  - ${file(resources/s3-bucket.yml)}
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}

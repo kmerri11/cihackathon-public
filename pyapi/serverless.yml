@@ -1,0 +1,83 @@
+service: cihackathon-pyapi
+
+# Exclude development files
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    #layer: true
+    dockerizePip: non-linux
+    zip: true
+    slim: false
+    #invalidateCaches: true
+    useDownloadCache: true
+    useStaticCache: true
+  project: cihackathon
+  round: ${opt:round, self:provider.round}
+  stage: ${opt:stage, self:provider.stage}
+  algorithmsTable: ${self:custom.project}-${self:custom.stage}-${self:custom.round}-algorithms
+
+provider:
+  name: aws
+  round: round1
+  runtime: python3.6
+  region: us-east-2
+  stage: dev
+  # WARNING: Function vocoder has timeout of 60 seconds, however, it's 
+  # attached to API Gateway so it's automatically limited to 30 seconds.
+  # Refer to https://stackoverflow.com/questions/54299958/how-can-i-set-the-aws-api-gateway-timeout-higher-than-30-seconds
+  # if and when the timeout becomes an issue.
+  timeout: 60
+  versionFunctions: false
+
+  environment:
+    DYNAMODB_TABLE: ${self:custom.algorithmsTable}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:ListBucket
+        - s3:PutObject
+      Resource:
+        - "arn:aws:s3:::cihackathon-algorithm-uploads/*"
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:ListBucket
+        - s3:PutObject
+      Resource:
+        - "arn:aws:s3:::cihackathon-vocoder-outputs/*"
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:ListBucket
+      Resource:
+        - "arn:aws:s3:::cihackathon-vocoder-validation-files/*"
+
+
+functions:
+  #layers:
+  #- {Ref: PythonRequirementsLambdaLayer}
+  vocoder:
+    handler: vocoder.lambda_handler
+    events:
+      - http:
+          method: put
+          path: vocoder

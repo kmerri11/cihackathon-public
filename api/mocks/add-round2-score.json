@@ -1,0 +1,8 @@
+{
+    "body": "{\"pairId\":\"47aaaf10-17e5-11eb-bd4d-5709e3067c24\",\"setId\":\"cnc_1\",\"algorithmId\":\"47aaaf10-17e5-11eb-bd4d-5709e3067c24\",\"userId\":\"us-east-2:41bbbe83-6a4a-4222-9528-5c901313cd4a\",\"score\":1}",
+    "requestContext": {
+      "identity": {
+        "cognitoIdentityId": "us-east-2:41bbbe83-6a4a-4222-9528-5c901313cd4a"
+      }
+    }
+  }
